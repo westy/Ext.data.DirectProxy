@@ -1,5 +1,4 @@
 Ext.define('Ext.data.DirectProxy', {
-	requires: ['Ext.util.MixedCollection', 'Ext.Ajax'],
 	extend: 'Ext.data.ServerProxy',
 	alias: 'proxy.direct',
 
@@ -31,10 +30,6 @@ Ext.define('Ext.data.DirectProxy', {
 
 		args.push(params);
 
-		if (me.paramsAsHash) {
-			//params = Ext.encode(params);
-		}
-
 		var trans = {
             params : params || {},
             request: {
@@ -56,21 +51,21 @@ Ext.define('Ext.data.DirectProxy', {
         var me = this,
 	        action = operation.action;
 
-        return function(result, req) {
-            if (!result.success) {
+        return function(result, res) {
+            if (!res.status) {
                 me.fireEvent('exception', me, 'remote', action, trans, res, null);
                 trans.request.callback.call(me, operation);
                 return;
             }
             if (action === "read") {
-                me.onRead(operation, action, trans, result, req, callback, scope);
+                me.onRead(operation, action, trans, result, res, callback, scope);
             } else {
-                me.onWrite(operation, action, trans, result, req, rs);
+                me.onWrite(operation, action, trans, result, res, rs);
             }
         };
     },
 
-	onRead: function(operation, action, trans, response, request, callback, scope) {
+	onRead: function(operation, action, trans, response, res, callback, scope) {
 		var me     = this,
 			reader = me.getReader(),
 			records;
