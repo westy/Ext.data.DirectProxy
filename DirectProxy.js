@@ -87,5 +87,20 @@ Ext.define('Ext.data.DirectProxy', {
 		operation.setSuccessful();
 
 		trans.request.callback.call(scope || me, operation);
-	}
+	},
+
+    encodeSorters: function(sorters) {
+        var encodedSorters = this.callParent(arguments);
+        return Ext.decode(encodedSorters);
+    },
+
+    encodeFilters: function(filters) {
+        var encodedFilters = this.callParent(arguments);
+        return Ext.decode(encodedFilters);
+    },
+
+    encodeGroupers: function(group) {
+        var encodedGroup = this.callParent(arguments);
+        return Ext.decode(encodedGroup);
+    }
 });
